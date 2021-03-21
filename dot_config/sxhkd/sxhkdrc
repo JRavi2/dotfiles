@@ -8,7 +8,7 @@ super + t
 
 # program launcher
 super + @space
-	xfce4-appfinder --collapsed
+	kupfer
 
 # make sxhkd reload its configuration files:
 super + Escape
