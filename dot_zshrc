@@ -10,6 +10,10 @@ _JAVA_AWT_WM_NONREPARENTING=1
 # to know which specific one was loaded, run: echo $RANDOM_THEME
 # See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
 ZSH_THEME="awesomepanda"
+GOPATH=$(go env GOPATH)
+# GOBIN="~/code/thanos/.bin"
+GOPROXY="https://proxy.golang.org"
+# PATH="$GOBIN:$PATH"
 
 # Set list of themes to pick from when loading at random
 # Setting this variable when ZSH_THEME=random will cause zsh to load
@@ -109,3 +113,11 @@ alias grep='grep --color'
 alias cls=clear
 alias csl=clear
 alias sl=ls
+alias vim=nvim
+alias v=nvim
+
+# Start nvm
+start_nvm() {
+  export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
+  [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm
+}

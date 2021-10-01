@@ -8,7 +8,7 @@ reset='\e[0m'
 export LS_COLORS='no=00:fi=00:di=38;5;117:ln=38;5;214:ex=38;5;10:';
 
 # Prompt.
-export PS1="\[$blue\]\u \[$yellow\]\h \[$green\]\W\[$orange\]\$(__git_ps1) \[$red\]$\[$reset\] " # Color + git
+export PS1="\[$blue\]\u \[$yellow\]\h \[$green\]\W\[$orange\] \[$red\]$\[$reset\] " # Color + git
 
 # PATH
 export PATH=/var/lib/snapd/snap/bin:/home/ravi/.local/bin:$PATH
@@ -35,15 +35,6 @@ HISTSIZE=1000
 HISTFILESIZE=2000
 HISTTIMEFORMAT="%d/%m/%y %T "
 shopt -s histappend # Append to the history file, don't overwrite it
-
-# Enable bash completion
-if [[ -f /etc/bash_completion ]] && ! shopt -oq posix; then
-    . /etc/bash_completion
-fi
-
-# Imports.
-source ~/bash-config/git-prompt.sh # Git branch
-source ~/bash-config/git-completion.bash # Git commands and branches auto complete
 
 # Default files and dirs permissions.
 umask 002

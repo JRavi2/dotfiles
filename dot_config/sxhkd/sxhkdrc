@@ -6,9 +6,13 @@
 super + t
 	xfce4-terminal
 
+# Launch Flameshot
+super + p
+	flameshot gui
+
 # program launcher
 super + @space
-	kupfer
+	dmenu_run
 
 # make sxhkd reload its configuration files:
 super + Escape
@@ -24,7 +28,7 @@ super + w
 
 # Launch Firefox
 super + shift + w
-    firefox
+	firefox
 
 # Shutdown
 super + alt + shift + q
@@ -83,8 +87,8 @@ super + {grave,Tab}
 	bspc {node,desktop} -f last
 
 # focus or send to the given desktop
-super + {_,shift + }{1-5}
-	bspc {desktop -f,node -d} '^{1-5}'
+super + {_,shift + }{1-8}
+	bspc {desktop -f,node -d} '^{1-8}'
 
 #
 # preselect
@@ -128,12 +132,16 @@ super + {Left,Down,Up,Right}
 
 # Decrease volume by 5%
 XF86AudioLowerVolume
-    pactl set-sink-volume 0 -5%
+    pactl set-sink-volume 3 -5%
 
 # Increase volume by 5%
 XF86AudioRaiseVolume
-    pactl set-sink-volume 0 +5%
+    pactl set-sink-volume 3 +5%
 
 # Toggle Mute
 XF86AudioMute
-    amixer set Master toggle
+    pactl set-sink-mute 3 toggle
+
+# Mute Mic
+XF86AudioMicMute
+    pactl set-source-mute 4 toggle

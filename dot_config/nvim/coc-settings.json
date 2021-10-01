@@ -27,5 +27,9 @@
 				}
 			}
 		}
-	}
+	},
+	"python.linting.enabled": true,
+	"python.linting.flake8Enabled": true,
+	"python.formatting.autopep8Args": ["--max-line-length", "119", "--experimental"],
+	"prettier.printWidth" : 120
 }
