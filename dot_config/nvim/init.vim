@@ -38,11 +38,10 @@ endif
 set autoindent
 set smartindent
 " set smarttab
-set tabstop=8
+set tabstop=2
 set shiftwidth=2
-set softtabstop=2
 " set shiftround
-" set expandtab
+set expandtab
 
 " SCROLLING
 set scrolloff=10
@@ -50,7 +49,7 @@ set sidescrolloff=15
 set sidescroll=1
 
 " PACKAGES
-"Install Vim-Plug if Absent
+" Install Vim-Plug if Absent
 let data_dir = has('nvim') ? stdpath('data') . '/site' : '~/.vim'
 if empty(glob(data_dir . '/autoload/plug.vim'))
   silent execute '!curl -fLo '.data_dir.'/autoload/plug.vim --create-dirs  https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
@@ -61,46 +60,38 @@ call plug#begin()
 
 " ESSENTIALS
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
-" Plug 'tpope/vim-sensible'
-" Plug 'dense-analysis/ale'
 Plug 'preservim/nerdcommenter'
-" Plug 'tpope/vim-surround'
-Plug 'junegunn/fzf', { 'do': { -> fzf#install() }}
+Plug 'tpope/vim-surround'
 Plug 'junegunn/fzf.vim'
 Plug 'mbbill/undotree'
 Plug 'mhinz/vim-grepper'
-"Plug 'scrooloose/nerdtree'
+Plug 'francoiscabrol/ranger.vim'
+Plug 'rbgrouleff/bclose.vim'
+Plug 'chaoren/vim-wordmotion'
+" Plug 'turbio/bracey.vim' (Live server - plan to do something interesting with this)
+Plug 'godlygeek/tabular' " Rearely use this but handy
+Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+
+" Git
+Plug 'mhinz/vim-signify'
+Plug 'tpope/vim-fugitive'
 
 " AESTHETICS
-Plug 'sainnhe/sonokai'
-" Plug 'ajmwagar/vim-deus'
-" Plug 'joshdick/onedark.vim'
-" Plug 'mhartington/oceanic-next'
+Plug 'folke/tokyonight.nvim'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
-Plug 'Yggdroot/indentLine'
 
-" LANGUAGE
+" LANGUAGE SERVERS
 Plug 'pangloss/vim-javascript'
 Plug 'maxmellon/vim-jsx-pretty'
 Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
-Plug 'godlygeek/tabular'
 Plug 'plasticboy/vim-markdown'
-Plug 'https://github.com/rexagod/samwise.nvim'
 
 call plug#end()
 
 " For the sexy looks :p
-if (empty($TMUX))
-    if (has("nvim"))
-        let $NVIM_TUI_ENABLE_TRUE_COLOR=1
-    endif
-    if (has("termguicolors"))
-        set termguicolors
-    endif
-endif
 syntax on
-colorscheme sonokai
+colorscheme tokyonight-moon
 
 " Airline Stuff
 let g:airline_powerline_fonts = 1
@@ -111,27 +102,46 @@ let g:NERDSpaceDelims = 1
 let g:NERDCompactSexyComs = 1
 let g:NERDDefaultAlign = 'left'
 
+" Ranger
+let g:ranger_replace_netrw = 1
+let g:ranger_map_keys = 0
+let g:ranger_command_override = 'ranger --cmd "set show_hidden=true"'
+
+" Wordmotion
+let g:wordmotion_spaces = ['\w\@<=-\w\@=', '\.']
+let g:wordmotion_uppercase_spaces = ['-']
+
 " My prefferred mappings
+"
+" Arrow keys eww
 noremap <Up> <nop>
 noremap <Left> <nop>
 noremap <Down> <nop>
 noremap <Right> <nop>
+
+" Copy to the peasant clip
 noremap <leader>y "+y
 noremap <leader>p "+p
-noremap <leader>F :Format<CR>
-noremap <leader>E :Explore<CR>
-nmap <leader>gd <Plug>(coc-definition)
-nmap <leader>gr <Plug>(coc-references)
-nnoremap <leader>G :GoRun %<CR>
-nnoremap <leader>gg :Grepper<CR>
+noremap <leader>w :update<CR>
+noremap <leader>q :q<CR>
+noremap <leader>Q :q!<CR>
+noremap <leader><space> :nohlsearch<CR>
 nnoremap <leader>tr :split <bar> :resize 10 <bar> :term <CR>
-" nnoremap <leader>pv :tabnew <bar> :Ex <CR>
+noremap <leader>pv :tabnew <bar> :Ex <CR>
 nnoremap <silent> <Leader>+ :resize +10<CR>
 nnoremap <silent> <Leader>- :resize -10<CR>
 nnoremap <leader>h :wincmd h<CR>
 nnoremap <leader>j :wincmd j<CR>
 nnoremap <leader>k :wincmd k<CR>
 nnoremap <leader>l :wincmd l<CR>
+
+" Pugin mappings
+noremap <leader>F :Format<CR>
+noremap <leader>E :RangerCurrentFile<CR>
+nmap <leader>gd <Plug>(coc-definition)
+nmap <leader>gr <Plug>(coc-references)
+nnoremap <leader>G :GoRun %<CR>
+nnoremap <leader>gg :Grepper<CR>
 nnoremap <leader>u :UndotreeShow<CR>
 
 " KEYMAPS
@@ -142,13 +152,6 @@ map <C-p> :Files<CR>
 map <M-h> :bp<CR>
 map <M-l> :bn<CR>
 map <M-w> :bd<CR>
-
-" let g:ale_linters = {'python': ['flake8'], 'javascript': ['eslint']}
-" let g:ale_fixers = {'python': ['black'], 'javascript': ['prettier', 'eslint'], 'json': ['prettier']}
-" let g:ale_fix_on_save = 1
-
-autocmd Filetype go set shiftwidth=8
-autocmd Filetype go set softtabstop=8
 
 " Random Stuff for COC (Mostly yanked them from the official repo's readme :p)
 
@@ -172,16 +175,6 @@ if has('nvim')
 else
     inoremap <silent><expr> <c-@> coc#refresh()
 endif
-
-" Make <CR> auto-select the first completion item and notify coc.nvim to
-" format on enter, <cr> could be remapped by other vim plugin
-inoremap <silent><expr> <cr> pumvisible() ? coc#_select_confirm()
-    \: "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
-
-" Use `[g` and `]g` to navigate diagnostics
-" Use `:CocDiagnostics` to get all diagnostics of current buffer in location list.
-nmap <silent> [g <Plug>(coc-diagnostic-prev)
-nmap <silent> ]g <Plug>(coc-diagnostic-next)
 
 " GoTo code navigation.
 nmap <silent> gd <Plug>(coc-definition)
@@ -228,3 +221,15 @@ let airline#extensions#coc#warning_symbol = 'Warning:'
 let airline#extensions#coc#stl_format_err = '%E{[%e(#%fe)]}'
 let airline#extensions#coc#stl_format_warn = '%W{[%w(#%fw)]}'
 
+" Treesitter
+lua <<EOF
+require'nvim-treesitter.configs'.setup {
+	ensure_installed = {"go", "lua", "java", "rust", "json", "c", "cpp", "bash", "javascript", "typescript"},
+	highlight = {
+		enable = true,
+	},
+	incremental_selection = {
+		enable = true,
+	}
+}
+EOF
